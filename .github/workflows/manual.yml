@@ -1,22 +1,10 @@
-name: Build Mycelis Firmware
-
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Extract Mycelis source
         run: |
           mkdir source
           unzip -q xiaozhi-esp32-2.5.0-mycelis.zip -d source
-          cd source/xiaozhi-esp32-2.5.0-mycelis
-          echo "SOURCE_DIR=$PWD" >> "$GITHUB_ENV"
+          SOURCE_DIR="$(find "$GITHUB_WORKSPACE/source" -name CMakeLists.txt -path '*/main/CMakeLists.txt' -print -quit | xargs dirname | xargs dirname)"
+          echo "SOURCE_DIR=$SOURCE_DIR" >> "$GITHUB_ENV"
+          echo "Using source directory: $SOURCE_DIR"
 
       - name: Build with ESP-IDF 6.0.2
         uses: espressif/install-esp-idf-action@v1
