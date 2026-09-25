@@ -1,0 +1,37 @@
+name: Build Mycelis Firmware
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Mycelis source
+        run: |
+          mkdir source
+          unzip -q xiaozhi-esp32-2.5.0-mycelis.zip -d source
+          cd source/xiaozhi-esp32-2.5.0-mycelis
+          echo "SOURCE_DIR=$PWD" >> "$GITHUB_ENV"
+
+      - name: Build with ESP-IDF 6.0.2
+        uses: espressif/install-esp-idf-action@v1
+        with:
+          version: v6.0.2
+
+      - name: Build Mycelis
+        working-directory: ${{ env.SOURCE_DIR }}
+        run: |
+          python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mycelis-firmware
+          path: |
+            ${{ env.SOURCE_DIR }}/build/merged-binary.bin
+            ${{ env.SOURCE_DIR }}/build/*.bin
