@@ -18,9 +18,7 @@ jobs:
 
       - name: Build
         run: |
-          python scripts/build.py spotpear/sp-esp32-s3-1.28-box
-
-
+          python scripts/build.py --target esp32s3 spotpear/sp-esp32-s3-1.28-box
 
       - name: Save firmware
         uses: actions/upload-artifact@v4
@@ -28,4 +26,3 @@ jobs:
           name: Mycelis-firmware
           path: |
             build/*.bin
-
