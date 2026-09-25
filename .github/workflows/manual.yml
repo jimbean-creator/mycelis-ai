@@ -11,12 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ESP-IDF
-        uses: espressif/install-esp-idf-action@v1
-        with:
-          version: v5.3
-
-      - name: Show build help
+      - name: Find build script
         run: |
-          python scripts/build.py --help
+          find . -name "build.py" -o -name "CMakeLists.txt"
 
