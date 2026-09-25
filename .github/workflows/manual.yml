@@ -1,17 +1,4 @@
-name: Build Mycelis Firmware
-
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Find build script
+      - name: List repository contents
         run: |
-          find . -name "build.py" -o -name "CMakeLists.txt"
+          ls -la
 
