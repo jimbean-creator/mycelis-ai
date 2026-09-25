@@ -18,9 +18,10 @@ jobs:
         with:
           version: v5.3
 
-      - name: Build Firmware
+      - name: Configure and Build Board
         run: |
-          python scripts/build.py --board spotpear/sp-esp32-s3-1.28-box
+          . $IDF_PATH/export.sh
+          python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
 
       - name: Save firmware
         uses: actions/upload-artifact@v4
