@@ -1,4 +1,30 @@
-      - name: List repository contents
+      name: Build Mycelis Firmware
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ESP-IDF
+        uses: espressif/install-esp-idf-action@v1
+        with:
+          version: v5.3
+
+      - name: Build Firmware
         run: |
-          ls -la
+          python main/boards/scripts/build.py --name sp-esp32-s3-1.28-box spotpear/sp-esp32-s3-1.28-box
+
+      - name: Save firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mycelis-firmware
+          path: |
+            build/*.bin
+
 
