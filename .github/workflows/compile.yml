@@ -21,6 +21,7 @@ jobs:
       - name: Configure and Build Board
         run: |
           . $IDF_PATH/export.sh
+          python $IDF_PATH/tools/idf_tools.py install
           python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
 
       - name: Save firmware
