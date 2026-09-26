@@ -17,11 +17,11 @@ jobs:
         uses: espressif/install-esp-idf-action@v1
         with:
           version: v5.3
+          targets: 'esp32s3'
 
       - name: Configure and Build Board
         run: |
           . $IDF_PATH/export.sh
-          python $IDF_PATH/tools/idf_tools.py install
           python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
 
       - name: Save firmware
@@ -30,3 +30,4 @@ jobs:
           name: Mycelis-firmware
           path: |
             build/*.bin
+
