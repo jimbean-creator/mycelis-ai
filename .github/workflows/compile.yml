@@ -13,18 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install ESP-IDF
+        uses: espressif/install-esp-idf-action@v1
         with:
-          python-version: '3.10'
+          version: "5.3"
+          targets: "esp32s3"
+          additional_tools: "esp-rom-elfs"
 
-      - name: Install and Build ESP-IDF
+      - name: Build Firmware
         run: |
-          git clone -b v5.3 --recursive https://github.com/espressif/esp-idf.git $HOME/esp/esp-idf
-          cd $HOME/esp/esp-idf
-          ./install.sh esp32s3
-          . ./export.sh
-          cd $GITHUB_WORKSPACE
+          . $IDF_PATH/export.sh
           python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
 
       - name: Save firmware
@@ -33,5 +31,3 @@ jobs:
           name: Mycelis-firmware
           path: |
             build/*.bin
-
-
