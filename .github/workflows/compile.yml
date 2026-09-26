@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Natively Without EIM
         run: |
-          echo "Cloning ESP-IDF..."
+          echo "Cloning ESP-IDF v5.3..."
           git clone -b v5.3 --depth 1 --recursive https://github.com/espressif/esp-idf.git $HOME/esp-idf
           
           echo "Running native installer..."
@@ -32,10 +32,17 @@ jobs:
           echo "Exporting environment..."
           . ./export.sh
           
-          echo "Running build..."
+          echo "Installing project requirements..."
           cd $GITHUB_WORKSPACE
-          idf.py set-target esp32s3
-          idf.py build
+          if [ -f "requirements.txt" ]; then
+              pip install -r requirements.txt
+          fi
+          if [ -f "components/requirements.txt" ]; then
+              pip install -r components/requirements.txt
+          fi
+          
+          echo "Running project build script..."
+          python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
 
       - name: Save firmware
         uses: actions/upload-artifact@v4
@@ -43,3 +50,4 @@ jobs:
           name: Mycelis-firmware
           path: |
             build/*.bin
+
