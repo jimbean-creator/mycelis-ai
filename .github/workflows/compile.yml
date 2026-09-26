@@ -32,17 +32,10 @@ jobs:
           echo "Exporting environment..."
           . ./export.sh
           
-          echo "Installing project requirements..."
+          echo "Building firmware with idf.py..."
           cd $GITHUB_WORKSPACE
-          if [ -f "requirements.txt" ]; then
-              pip install -r requirements.txt
-          fi
-          if [ -f "components/requirements.txt" ]; then
-              pip install -r components/requirements.txt
-          fi
-          
-          echo "Running project build script..."
-          python scripts/build.py spotpear/sp-esp32-s3-1.28-box --name sp-esp32-s3-1.28-box
+          idf.py set-target esp32s3
+          idf.py build
 
       - name: Save firmware
         uses: actions/upload-artifact@v4
@@ -50,4 +43,3 @@ jobs:
           name: Mycelis-firmware
           path: |
             build/*.bin
-
